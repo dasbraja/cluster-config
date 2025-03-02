@@ -1,0 +1,70 @@
+---
+apiVersion: notification.toolkit.fluxcd.io/v1beta3
+kind: Provider
+metadata:
+  name: msteams
+  namespace: cluster-config
+spec:
+  type: msteams
+  secretRef:
+    name: msteams-webhook
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: msteams-webhook
+  namespace: flux-system
+stringData:
+    address: "https://<org_name>.webhook.office.com/webhookb2/<token>"
+
+
+---
+apiVersion: notification.toolkit.fluxcd.io/v1beta3
+kind: Provider
+metadata:
+  name: github-status
+  namespace: flux-system
+spec:
+  type: github
+  address: https://github.com/dasbraja/cluster-configs.git
+  secretRef:
+    name: github-token
+---
+apiVersion: notification.toolkit.fluxcd.io/v1beta3
+kind: Alert
+metadata:
+  name: github-status
+  namespace: flux-system
+spec:
+  providerRef:
+    name: github-status
+  eventSources:
+    - kind: Kustomization
+      name: flux-system
+
+---
+apiVersion: notification.toolkit.fluxcd.io/v1beta3
+kind: Alert
+metadata:
+  name: helmrelease-events
+  namespace: flux-system
+spec:
+  providerRef:
+    name: msteams
+  eventSeverity: info
+  eventSources:
+  - kind: GitRepository
+    name: '*'
+  - kind: HelmRepository
+    name: '*'
+  - kind: HelmChart
+    name: '*'
+  - kind: HelmRelease
+    name: '*'
+  inclusionList:
+    - ".*succeeded.*"
+    - ".*failure.*"
+    - ".*failed.*"
+  exclusionList:
+    - ".*uninstall.*"
+    - ".*test.*"  
