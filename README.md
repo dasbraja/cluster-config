@@ -1,7 +1,7 @@
 ## Cluster Config
 
-    ### Bootstrap FluxCD:
-        Execute this step to bootstrap flux in kubernetes. This will ensure cluster-config configuration will stay in git repo named cluster-config.
+### Bootstrap FluxCD    
+    ###    Execute this step to bootstrap flux in kubernetes. This will ensure cluster-config configuration will stay in git repo named cluster-config.
 
         export  GITHUB_TOKEN=<YOUR_PERSONAL_ACCESS_TOKEN>
 
@@ -25,8 +25,11 @@
         kustomize-controller-85c76d65cd-8pz5g          1/1     Running   0          53m
         notification-controller-58ffd586f7-mmxgp       1/1     Running   0          53m
         source-controller-547ddc6885-rbbm6             1/1     Running   0          53m
-    
-    ### Execute secret_replication.sh following to copy secrets into different namespace.
-    ### If you use AWS, ECR credentials need to get synced , so run ecr_sync.yaml in eks. this will schedule kubernetes jobs to refresh your ECR credentials.
-    ### If you would like to iintegration with MSTeams for notification, you need to create webhook in MSTeams and need to execute teams_notifications.yaml.
+        
+### Secret Replication to other namespace
+    Execute secret_replication.sh following to copy secrets into different namespace.
+    If you use AWS, ECR credentials need to get synced , so run ecr_sync.yaml in eks. this will schedule kubernetes jobs to refresh your ECR credentials.
+
+###  FluxCD notifications into MSTeams
+     if you would like to iintegration with MSTeams for notification, you need to create webhook in MSTeams and need to execute teams_notifications.yaml.
 
