@@ -1,0 +1,15 @@
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImagePolicy
+metadata:
+  name: sop-agent-service
+  namespace: cluster-config
+spec:
+  filterTags:
+    extract: $ts
+    pattern: '^dev-[a-f0-9]+-(?P<ts>[0-9]+)'
+  imageRepositoryRef:
+    name: sop-agent-service
+  policy:
+    numerical:
+      order: asc

@@ -1,0 +1,19 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: sop-agent-service
+  namespace: agent
+spec:
+  interval: 1m0s
+  chart:
+    spec:
+      reconcileStrategy: Revision
+      chart: ./deployment/.helm
+      sourceRef:
+        name: sop-agent-service
+        kind: GitRepository
+      valuesFiles:
+      - deployment/.helm/values_dev.yaml
+  values:
+    image:
+      tag: dev-0192b00-1738189147 #{"$imagepolicy": "cluster-config:sop-agent-service:tag"}  

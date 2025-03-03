@@ -1,0 +1,20 @@
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta1
+kind: ImageUpdateAutomation
+metadata:
+  name: cluster-config
+  namespace: cluster-config
+spec:
+  git:
+    commit:
+      author:
+        email: flux@noreply.com
+        name: flux
+      messageTemplate: '{{range .Updated.Images}}{{println .}}{{end}}'
+  interval: 1m0s
+  sourceRef:
+    kind: GitRepository
+    name: cluster-config
+  update:
+    path: "./clusters/dev-kube-cluster-abcde"
+    strategy: Setters
